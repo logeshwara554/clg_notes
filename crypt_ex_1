@@ -1,0 +1,33 @@
+def gcd(a,b):
+    if b == 0:
+        return a
+    else :
+         return gcd(b,a % b)
+def extended_gcd(a,b):
+    if b == 0:
+        return a,1,0
+    g,x1,y1 = extended_gcd(b,a%b)
+    x = y1
+    y = x1 - (a // b) * y1
+    return g,x,y
+def mod_inverse(a,m):
+    g,x,y = extended_gcd(a,m)
+    if g != 1:
+        raise Exception("no modlar inverse")
+    return x % m
+def main():
+    a = int(input("Enter the value of a: "))
+    b = int(input("Enter the value of b: "))
+    gcd_value = gcd(a,b)
+    print("Gcd: ", gcd_value)
+    n = int(input("Enter the value of A to find the modular inverse: "))
+    m = int(input("Enter the value of modulus: "))
+    try:
+        inverse = mod_inverse(n,m)
+        print("modular inverse: ", inverse)
+    except Exception as e:
+        print(e)
+
+if __name__ == "__main__":
+    main()
+        
