@@ -1,0 +1,51 @@
+import random
+
+def fermat_test(n, k=10):
+    if n <= 1:
+        return False
+    if n == 2 or n == 3:
+        return True
+    if n % 2 == 0:
+        return False
+    for _ in range(k):
+        a = random.randint(2, n - 2)
+        if pow(a, n - 1, n) != 1:
+            return False
+    return True
+
+def miller_rabin_test(n, k=10):
+    if n <= 1:
+        return False
+    if n == 2 or n == 3:
+        return True
+    if n % 2 == 0:
+        return False
+    s, d = 0, n - 1
+    while d % 2 == 0:
+        s += 1
+        d //= 2
+    for _ in range(k):
+        a = random.randint(2, n - 2)
+        x = pow(a, d, n)
+        if x == 1 or x == n - 1:
+            continue
+        composite = True
+        for _ in range(s - 1):
+            x = pow(x, 2, n)
+            if x == n - 1:
+                composite = False
+                break
+        if composite:
+            return False
+    return True
+
+if __name__ == "__main__":
+    number_to_test = int(input("Enter number to test with Fermat: "))
+    iterations = int(input("Enter number of iterations: "))
+    composite_number = int(input("Enter first number for Miller-Rabin test: "))
+    other_number = int(input("Enter second number for Miller-Rabin test: "))
+
+    print("=== Fermat and Miller-Rabin Probabilistic Primality Tests ===\n")
+    print(f"Is {number_to_test} probably prime (Fermat test)? {fermat_test(number_to_test, iterations)}")
+    print(f"Is {composite_number} probably prime (Miller-Rabin test)? {miller_rabin_test(composite_number, iterations)}")
+    print(f"Is {other_number} probably prime (Miller-Rabin test)? {miller_rabin_test(other_number, iterations)}")
