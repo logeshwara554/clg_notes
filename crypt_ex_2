@@ -1,29 +1,75 @@
-def gcd(a,b):
-    while b != 0
-    a,b = b,a%b
+def gcd(a, b):
+    a, b = abs(a), abs(b)
+    while b != 0:
+        a, b = b, a % b
     return a
-def extended_gcd(a,b):
+
+def extended_gcd(a, b):
+    """Return (g, x, y) such that a*x + b*y = g = gcd(a, b)."""
     if b == 0:
-        return a,1,0
-    gcd,x1,y1 = extended_gcd(b,a%b)
+        return a, 1, 0
+    g, x1, y1 = extended_gcd(b, a % b)
     x = y1
-    y = x1 - (a//b) * y1
-    return gcd,x,y
-def mod_inverse(a,m):
-    gcd_val,x,y = extended_gcd(a,m)
-    if gcd_val != 1:
-        return none
-    else:
-        return x % m
+    y = x1 - (a // b) * y1
+    return g, x, y
+
+def mod_inverse(a, m):
+    """Modular inverse of a modulo m using extended Euclid. Returns None if not exists."""
+    g, x, y = extended_gcd(a, m)
+    if g != 1:
+        return None
+    return x % m
+
+def fermat_mod_inverse(a, p):
+    """Inverse using Fermat's little theorem (p must be prime)."""
+    if gcd(a, p) != 1:
+        return None
+    return pow(a, p - 2, p)
+
 def euler_totient(n):
+    """Compute Euler's totient phi(n)."""
+    if n == 0:
+        return 0
     result = n
     p = 2
-    while p * p <= n:
-        if n % p == 0:
-            while n % p == 0
-            n // p
-            result == result // p
-            p += 1
-            if n > 1:
-                result = result // n
-                return result
+    nn = n
+    while p * p <= nn:
+        if nn % p == 0:
+            while nn % p == 0:
+                nn //= p
+            result -= result // p
+        p += 1
+    if nn > 1:
+        result -= result // nn
+    return result
+
+def euler_mod_inverse(a, n):
+    """Inverse using Euler's theorem (works when gcd(a,n)=1)."""
+    if gcd(a, n) != 1:
+        return None
+    phi = euler_totient(n)
+    return pow(a, phi - 1, n)
+
+def main():
+    print("Enter a and n (or p for fermat's) to compute modular inverses")
+    a = int(input("Enter a (for Fermat's theorem, p must be prime): "))
+    p = int(input("Enter p (prime): "))
+    fermat_inv = fermat_mod_inverse(a, p)
+    if fermat_inv is None:
+        print("Fermat modular inverse does not exist")
+    else:
+        print(f"modular inverse of {a} modulo {p} : {fermat_inv}")
+
+    n = int(input("Enter n (for Euler's theorem): "))
+    euler_inv = euler_mod_inverse(a, n)
+    if euler_inv is None:
+        print("Euler modular inverse does not exist")
+    else:
+        print(f"modular inverse of {a} modulo {n} : {euler_inv}")
+
+    print(f"fermat theorem : {a} ^ {p-1} % {p} = {pow(a, p-1, p)}")
+    phi = euler_totient(n)
+    print(f"euler's theorem : {a} ^ {phi} % {n} = {pow(a, phi, n)}")
+
+if __name__ == "__main__":
+    main()
