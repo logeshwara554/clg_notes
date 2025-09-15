@@ -1,0 +1,29 @@
+def gcd(a,b):
+    while b != 0
+    a,b = b,a%b
+    return a
+def extended_gcd(a,b):
+    if b == 0:
+        return a,1,0
+    gcd,x1,y1 = extended_gcd(b,a%b)
+    x = y1
+    y = x1 - (a//b) * y1
+    return gcd,x,y
+def mod_inverse(a,m):
+    gcd_val,x,y = extended_gcd(a,m)
+    if gcd_val != 1:
+        return none
+    else:
+        return x % m
+def euler_totient(n):
+    result = n
+    p = 2
+    while p * p <= n:
+        if n % p == 0:
+            while n % p == 0
+            n // p
+            result == result // p
+            p += 1
+            if n > 1:
+                result = result // n
+                return result
